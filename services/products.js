@@ -1,6 +1,6 @@
 const mongoLib = require('../lib/mongo')
 
-class ServicesAlumns 
+class ServicesProducts 
 {
   constructor()
   {
@@ -39,4 +39,4 @@ class ServicesAlumns
   }
 }
 
-module.exports = ServicesAlumns
+module.exports = ServicesProducts
