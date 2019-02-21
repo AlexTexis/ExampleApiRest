@@ -2,6 +2,11 @@ const express = require('express')
 const router = express.Router()
 const serviceProducts = require('../../services/products')
 const services = new serviceProducts()
+const passport =  require('passport')
+const { createProductSchema } = require('../../utils/schemas/schemas')
+const validation = require('../../utils/middlewares/dataValidation')
+
+require('../../services/auth/jwt')
 
 router.get('/',async (req,res,next) => {
   try 
@@ -35,9 +40,10 @@ router.get('/:id',async (req,res,next) => {
   }
 })
 
-router.post('/',async (req,res,next) => {
+
+router.post('/',passport.authenticate('jwt',{session:false}),validation(createProductSchema),async (req,res,next) => {
   const { body } = req
-  try 
+  try  
   {
     const alumnCreate = await services.create({body})
     res.status(200).json({
@@ -51,7 +57,7 @@ router.post('/',async (req,res,next) => {
   }
 })
 
-router.put('/:id',async (req,res,next) => {
+router.put('/:id',passport.authenticate('jwt',{session:false}),async (req,res,next) => {
   const { id } = req.params
   const { body } = req
   try 
@@ -68,7 +74,7 @@ router.put('/:id',async (req,res,next) => {
   }
 })
 
-router.delete('/:id',async (req,res,next) => {
+router.delete('/:id',passport.authenticate('jwt',{session:false}),async (req,res,next) => {
   const { id } = req.params
   try 
   {
